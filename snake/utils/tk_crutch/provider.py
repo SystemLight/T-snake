@@ -132,7 +132,7 @@ class LabelCnfProvider(WidgetCnfProvider):
         # 组件在盒子中内容位置
         self.anchor = CENTER
 
-        # 是否存在下划线
+        # 是否存在下划线，定义在第几个字母下添加
         self.underline = -1
 
         # Label标签文字内容

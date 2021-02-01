@@ -15,19 +15,19 @@ class CnfState:
 
 
 class CnfAnchor:
-    N = N  # 上中方
-    S = S  # 下中方
-    W = W  # 垂直中左方
-    E = E  # 垂直中右方
-    NW = NW  # 上左方
-    SW = SW  # 下左方
-    NE = NE  # 上右方
-    SE = SE  # 下右方
-    CENTER = CENTER  # 垂直水平居中
+    TOP_CENTER = N = N  # 上中方
+    BOTTOM_CENTER = S = S  # 下中方
+    MIDDLE_LEFT = W = W  # 垂直中左方
+    MIDDLE_RIGHT = E = E  # 垂直中右方
+    TOP_LEFT = NW = NW  # 上左方
+    BOTTOM_LEFT = SW = SW  # 下左方
+    TOP_RIGHT = NE = NE  # 上右方
+    BOTTOM_RIGHT = SE = SE  # 下右方
+    MIDDLE_CENTER = CENTER = CENTER  # 垂直水平居中
 
-    NS = 'ns'
-    EW = 'ew'
-    NSEW = 'nsew'
+    NS = NS
+    EW = EW
+    NSEW = NSEW
 
 
 CnfSticky = CnfAnchor
@@ -77,19 +77,6 @@ class CnfAlign:
     BASELINE = BASELINE
 
 
-class CnfBordermode:
-    INSIDE = INSIDE
-    OUTSIDE = OUTSIDE
-
-
-class CnfMenuType:
-    CASCADE = CASCADE
-    CHECKBUTTON = CHECKBUTTON
-    COMMAND = COMMAND
-    RADIOBUTTON = RADIOBUTTON
-    SEPARATOR = SEPARATOR
-
-
 class CnfJustify:
     LEFT = LEFT
     RIGHT = RIGHT
@@ -102,6 +89,31 @@ class CnfCompound:
     BOTTOM = BOTTOM
     TOP = TOP
     CENTER = CENTER
+
+
+class CnfMenuType:
+    CASCADE = CASCADE
+    CHECKBUTTON = CHECKBUTTON
+    COMMAND = COMMAND
+    RADIOBUTTON = RADIOBUTTON
+    SEPARATOR = SEPARATOR
+
+
+class CnfBorderMode:
+    INSIDE = INSIDE
+    OUTSIDE = OUTSIDE
+
+
+class CnfSelectMode:
+    SINGLE = SINGLE
+    BROWSE = BROWSE
+    MULTIPLE = MULTIPLE
+    EXTENDED = EXTENDED
+
+
+class CnfProgressbarMode:
+    DETERMINATE = "determinate"
+    INDETERMINATE = "indeterminate"
 
 
 class MouseEvent:
@@ -131,6 +143,9 @@ class MouseEvent:
     SCROLL_TOP = "<Button-4>"  # 滑轮向上滚动
     SCROLL_BOTTOM = "<Button-5>"  # 滑轮向下滚动
 
+    LISTBOX_SELECT = "<<ListboxSelect>>"  # 虚拟绑定多选组件被选中触发
+    COMBOBOX_SELECT = "<<ComboboxSelected>>"
+
 
 class KeyEvent:
     Focus_In = "<FocusIn>"
@@ -156,7 +171,12 @@ class Protocols:
 
 class States:
     MAX_WINDOW = "zoomed"  # 最大化窗口
+    INVALID = "invalid"
+    DISABLED = "disabled"
+    NON_INVALID = "!invalid"
+    NON_DISABLED = "!disabled"
 
 
 class Attributes:
     MAX_WINDOW = "-fullscreen"  # 最大化窗口
+    ALPHA = "-alpha"  # 窗口透明度
