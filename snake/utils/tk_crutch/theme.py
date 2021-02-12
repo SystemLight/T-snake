@@ -1,7 +1,19 @@
-class CnfCursor:
+class Cursor:
     POINTER = "hand2"
     MOVE = "fleur"
     TEXT = "xterm"
+
+
+class Bitmap:
+    GRAY12 = "gray12"
+    GRAY25 = "gray25"
+    GRAY50 = "gray50"
+    GRAY75 = "gray75"
+    ERROR = "error"
+    INFO = "info"
+    QUESTION = "question"
+    WARNING = "warning"
+    QUESTHEAD = "questhead"
 
 
 class ThemeColor:

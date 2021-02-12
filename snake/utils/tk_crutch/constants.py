@@ -91,6 +91,24 @@ class CnfCompound:
     CENTER = CENTER
 
 
+class CnfCanvasArrow:
+    FIRST = FIRST
+    LAST = LAST
+    BOTH = BOTH
+
+
+class CnfCanvasCap:
+    BUTT = BUTT
+    PROJECTING = PROJECTING
+    ROUND = ROUND
+
+
+class CnfCanvasJoin:
+    ROUND = ROUND
+    BEVEL = BEVEL
+    MITER = MITER
+
+
 class CnfMenuType:
     CASCADE = CASCADE
     CHECKBUTTON = CHECKBUTTON
@@ -159,6 +177,11 @@ class KeyEvent:
     KEY_DOWN = "<Key>"
 
     ESC = "<Escape>"
+
+    KEY_PRESS_LEFT = "<KeyPress-Left>"
+    KEY_PRESS_RIGHT = "<KeyPress-Right>"
+    KEY_PRESS_UP = "<KeyPress-Up>"
+    KEY_PRESS_DOWN = "<KeyPress-Down>"
 
 
 class ComponentEvent:
