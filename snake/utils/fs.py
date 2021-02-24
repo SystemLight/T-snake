@@ -1,5 +1,3 @@
-from tornado.web import HTTPError
-
 import os
 import json
 from typing import Dict, Any, NoReturn
@@ -83,15 +81,41 @@ def write_bytes(path: str, data: bytes) -> NoReturn:
         fp.write(data)
 
 
-class InvalidPath(HTTPError):
+def insert2fp(file_path, offset, content, per_size=2048):
     """
 
-    抛出非法Http异常错误
+    允许你在文件指定位置进行内容插入
+
+    :param file_path: 文件路径
+    :param offset: 文件偏移位置
+    :param content: 插入的内容
+    :param per_size: 每片读取大小限制
+    :return: None
 
     """
+    copies = offset // per_size
 
-    def __init__(self):
-        super(InvalidPath, self).__init__(406, "Carry illegal path parameters")
+    f_dir, f_name = os.path.split(file_path)
+    temp_path = os.path.join(f_dir, f_name + ".temp")
+
+    with open(temp_path, "w") as w_fp:
+        with open(file_path, "r") as fp:
+            fp.seek(0)
+
+            for c in range(1, copies + 1 + int(offset % per_size > 0)):
+                if c * per_size >= offset:
+                    result = fp.read(offset - fp.tell())
+                else:
+                    result = fp.read(per_size)
+                w_fp.write(result)
+
+            w_fp.write(content)
+
+            for c in fp:
+                w_fp.write(c)
+
+    os.remove(file_path)
+    os.rename(temp_path, file_path)
 
 
 def check_join(root_path: str, *args) -> str:
@@ -107,7 +131,7 @@ def check_join(root_path: str, *args) -> str:
     root_path = os.path.abspath(root_path)
     result_path = os.path.abspath(os.path.join(root_path, *args))
     if not result_path.startswith(root_path):
-        raise InvalidPath()
+        raise ValueError("Illegal path")
     return result_path
 
 

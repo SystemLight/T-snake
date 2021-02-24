@@ -2,7 +2,7 @@ import logging
 import logging.handlers
 
 
-def init_log(log_path: str):
+def build_log(log_path: str):
     """
 
     初始化日志系统基础配置

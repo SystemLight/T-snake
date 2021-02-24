@@ -1,6 +1,6 @@
 from tkinter.constants import *
 
-from .theme import ThemeColor, CnfCursor
+from .theme import ThemeColor, Cursor
 from .tools import font
 
 default_font = font()
@@ -19,7 +19,7 @@ float_left_px10_pack_cnf["padx"] = 10
 primary_button_cnf = {
     "padx": 15,
     "pady": 6,
-    "cursor": CnfCursor.POINTER,
+    "cursor": Cursor.POINTER,
     "borderwidth": 0,
     "font": default_font,
     "fg": ThemeColor.white,
@@ -32,7 +32,7 @@ primary_button_cnf = {
 danger_button_cnf = {
     "padx": 15,
     "pady": 6,
-    "cursor": CnfCursor.POINTER,
+    "cursor": Cursor.POINTER,
     "borderwidth": 0,
     "font": default_font,
     "fg": ThemeColor.white,

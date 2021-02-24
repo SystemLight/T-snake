@@ -2,7 +2,7 @@ from tkinter import PhotoImage
 from tkinter.constants import *
 from typing import Union
 
-from .theme import ThemeColor, CnfCursor
+from .theme import ThemeColor, Cursor
 from ..unit import px2pt
 
 
@@ -291,7 +291,7 @@ class TkcButtonCnfProvider(ButtonCnfProvider):
         self.bg = ThemeColor.primary
         self.padx = 15
         self.pady = 6
-        self.cursor = CnfCursor.POINTER
+        self.cursor = Cursor.POINTER
         self.borderwidth = 0
         self.activebackground = ThemeColor.active_primary
         self.activeforeground = ThemeColor.white
@@ -315,18 +315,18 @@ class SeparatorCnfProvider(TTKWidgetCnfProvider):
 class PackCnfProvider(BasicCnfProvider):
 
     def __init__(
-        self,
-        before=None,
-        after=None,
-        anchor=NW,
-        expand=FALSE,
-        fill=NONE,
-        side=TOP,
-        ipadx=None,
-        ipady=None,
-        padx=(0, 0),
-        pady=(0, 0),
-        **kwargs
+            self,
+            before=None,
+            after=None,
+            anchor=NW,
+            expand=FALSE,
+            fill=NONE,
+            side=TOP,
+            ipadx=None,
+            ipady=None,
+            padx=(0, 0),
+            pady=(0, 0),
+            **kwargs
     ):
         BasicCnfProvider.__init__(self, **kwargs)
 
