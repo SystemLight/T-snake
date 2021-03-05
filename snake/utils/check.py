@@ -1,10 +1,21 @@
 from typing import Dict, Any, Callable, List, Union
+from functools import partial
 
 """
 
 python dict对象校验器
 
 """
+
+SOME_TYPE = "some"
+EVERY_TYPE = "every"
+
+
+class Undefined:
+    pass
+
+
+undefined = Undefined()
 
 
 class BaseMessage:
@@ -25,11 +36,16 @@ class BaseMessage:
         self.status = status
         self.msg = msg
 
+        # 包含子元素从底部传导到顶层的key值
+        self.paths = []
+
 
 def some(content: Dict, config: Dict) -> BaseMessage:
     """
 
-    检验dict对象，当一个key值触发错误就返回message对象
+    检验dict对象，当一个key值触发错误就返回message对象，
+    注意检查函数只会检查content中真实存在的内容，不会检查不存在内容，
+    如果预期值并不能放到content中，请用dict().update补充对应的默认值
 
     校验字典::
 
@@ -50,6 +66,7 @@ def some(content: Dict, config: Dict) -> BaseMessage:
         m = verify(content[key], config.get(key, []))
         if not m.status:
             m.key = key
+            m.paths.append(key)
             return m
     return BaseMessage(None, msg=content)
 
@@ -57,7 +74,9 @@ def some(content: Dict, config: Dict) -> BaseMessage:
 def every(content: Dict, config: Dict) -> BaseMessage:
     """
 
-    检验dict对象，当全部key值校验完所有规则函数返回message对象
+    检验dict对象，当全部key值校验完所有规则函数返回message对象，
+    注意检查函数只会检查content中真实存在的内容，不会检查不存在内容，
+    如果预期值并不能放到content中，请用dict().update补充对应的默认值
 
     校验字典::
 
@@ -132,6 +151,25 @@ def verify(param: Any, preset: Union[Callable, List], strict: bool = False):
     return base_m
 
 
+def build_check(check_type: str, config: Dict):
+    """
+
+    构建检查器
+
+    :param check_type: 检查器类型，every或者some
+    :param config: 检查规则函数
+    :return: 检查器函数
+
+    """
+    if check_type == SOME_TYPE:
+        return partial(some, config=config)
+
+    if check_type == EVERY_TYPE:
+        return partial(every, config=config)
+
+    raise TypeError("check_type is not support")
+
+
 def rule(fn):
     """
 
@@ -153,6 +191,49 @@ def rule(fn):
     return wrap
 
 
+def __items(param, config, check_type=SOME_TYPE):
+    if check_type == SOME_TYPE:
+        return some(param, config)
+
+    if check_type == EVERY_TYPE:
+        return every(param, config)
+
+    raise TypeError("check_type is not support")
+
+
+items = rule(__items)
+
+
+@rule
+def s_items(param, config):
+    """
+
+    子元素校验规则，通过传入子元素校验配置实现子元素内容校验，
+    使用some校验
+
+    :param param:
+    :param config:
+    :return: Message 所有继承BaseMessage的对象
+
+    """
+    return __items(param, config, SOME_TYPE)
+
+
+@rule
+def e_items(param, config):
+    """
+
+    子元素校验规则，通过传入子元素校验配置实现子元素内容校验，
+    使用every校验
+
+    :param param:
+    :param config:
+    :return: Message 所有继承BaseMessage的对象
+
+    """
+    return __items(param, config, EVERY_TYPE)
+
+
 @rule
 def not_null(param, error_msg="none"):
     """
@@ -171,11 +252,3 @@ def not_null(param, error_msg="none"):
         return BaseMessage()
     else:
         return BaseMessage(msg=error_msg, status=False)
-
-
-if __name__ == '__main__':
-    # 单值验证，a不是空值所以验证通过
-    print(verify("a", [not_null]).__dict__)
-    print(verify("a", not_null).__dict__)
-    print(verify("a", [not_null(error_msg="fail")]).__dict__)
-    print(verify("a", not_null(error_msg="fail")).__dict__)

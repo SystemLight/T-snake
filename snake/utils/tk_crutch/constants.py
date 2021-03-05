@@ -185,7 +185,7 @@ class KeyEvent:
 
 
 class ComponentEvent:
-    CONFIGURE = "<Configure>"
+    CONFIGURE = RESIZE = "<Configure>"
 
 
 class Protocols:
